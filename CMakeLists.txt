@@ -16,21 +16,38 @@ include_directories(${PROJECT_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(include)
 
-set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp)
-
-QT5_WRAP_UI(UISrcs 
-            ${CMAKE_CURRENT_SOURCE_DIR}/src/ui_video_face_detection.ui)
-
-QT5_WRAP_CPP(MOCrcs
-						  ${MAIN_APP_SRC}
-#              ${CMAKE_CURRENT_SOURCE_DIR}/include/main_window.hpp
-#              ${CMAKE_CURRENT_SOURCE_DIR}/src/main_window.cpp
-#              ${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
-#              ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp
+set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
+  	              ${CMAKE_CURRENT_SOURCE_DIR}/include/main_window.hpp
+                  ${CMAKE_CURRENT_SOURCE_DIR}/src/main_window.cpp
 )
 
+set(VIDEO_FACE_DETECTION_SRC ${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
+                              ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp)
+
+QT5_WRAP_UI(VIDEO_FACE_DETECTION_UISrcs 
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.ui)
+
+QT5_WRAP_CPP(MAIN_MOCrcs
+						  ${MAIN_APP_SRC}
+)
+
+QT5_WRAP_CPP(VIDEO_FACE_DETECTION_MOCrcs
+						  ${VIDEO_FACE_DETECTION_SRC}
+)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
-add_executable(qt_video_app ${MOCrcs} ${MAIN_APP_SRC})
+add_library(video_face_detection
+	           ${VIDEO_FACE_DETECTION_MOCrcs}
+						 ${VIDEO_FACE_DETECTION_SRC}
+						 ${VIDEO_FACE_DETECTION_UISrcs}
+)
+
+
+add_executable(qt_video_app ${MAIN_MOCrcs} ${MAIN_APP_SRC})
+
+target_link_libraries(qt_video_app
+	video_face_detection
+	)
 
 qt5_use_modules(qt_video_app Core Gui Widgets)
+qt5_use_modules(video_face_detection Core Gui Widgets)

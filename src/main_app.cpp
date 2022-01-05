@@ -15,7 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include "main_window.hpp"
+#include "main_window.hpp"
 #include <QtWidgets/QApplication>
 #include <signal.h>
 #include <unistd.h>
@@ -42,8 +42,9 @@ void catchUnixSignal(int quitSignal) {
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
   catchUnixSignal(SIGINT);
-  //  MainWindow main_window;
-  //  main_window.show();
+
+  MainWindow main_window;
+  main_window.show();
   
   return app.exec();
 }
