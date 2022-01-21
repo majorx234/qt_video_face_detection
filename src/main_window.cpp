@@ -8,10 +8,10 @@ MainWindow::MainWindow()
 {
   setGeometry( 100, 100, 935, 650 );
   setCentralWidget(main_video_widget);
+  createMenuBar();
 }
 
-void MainWindow::loadFile(const QString &fileName)
-{
+void MainWindow::loadFile(const QString &fileName) {
 
 }
 
@@ -32,16 +32,27 @@ void MainWindow::newFile()
 
 void MainWindow::open()
 {
-
+  QString fileName = QFileDialog::getOpenFileName(this,
+    tr("Open Video"), "~", tr("Video Files (*.mp4)"));
+  loadFile(fileName);
 }
 bool MainWindow::save()
 {
 
+  return true;
 }
 
 void MainWindow::createMenuBar()
 {
+  QMenu *fileMenu;
+  QAction *openAct;
 
+  openAct = new QAction(tr("&Open"), this);
+  openAct->setShortcuts(QKeySequence::New);
+  openAct->setStatusTip(tr("Create a new file"));
+  connect(openAct, &QAction::triggered, this, &MainWindow::open);
+  fileMenu = menuBar()->addMenu(tr("&File"));
+  fileMenu->addAction(openAct);
 }
 
 void MainWindow::createStatusBar()
@@ -51,5 +62,5 @@ void MainWindow::createStatusBar()
 
 bool MainWindow::saveFile(const QString &fileName)
 {
-
+  return true;
 }

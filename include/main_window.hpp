@@ -31,7 +31,7 @@ public:
 
 protected:
   void closeEvent(QCloseEvent *event) override;
-  void resizeEvent(QResizeEvent* event);
+  void resizeEvent(QResizeEvent* event) override;
 private slots:
   void newFile();
   void open();
@@ -41,7 +41,6 @@ private:
   void createMenuBar();
   void createStatusBar();
   bool saveFile(const QString &fileName);
-
   VideoFaceDetection* main_video_widget;
 };        
 

@@ -13,8 +13,7 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent) : QWidget(parent), ui(ne
 }
 
 
-VideoFaceDetection::~VideoFaceDetection() 
-{
+VideoFaceDetection::~VideoFaceDetection(){
 
 }
 
