@@ -19,7 +19,10 @@
 #define MAIN_WINDOW_HPP
 
 #include <QtWidgets/QMainWindow>
+
 #include "video_face_detection.hpp"
+
+
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -42,6 +45,7 @@ private:
   void createStatusBar();
   bool saveFile(const QString &fileName);
   VideoFaceDetection* main_video_widget;
+
 };        
 
 #endif // MAIN_WINDOW_HPP

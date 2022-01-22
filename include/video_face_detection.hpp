@@ -1,6 +1,9 @@
 #ifndef VIDEO_FACE_DETECTION_HPP
 #define VIDEO_FACE_DETECTION_HPP
 #include <QtWidgets>
+#include <opencv2/opencv.hpp> 
+#include "opencv2/imgproc/imgproc.hpp"
+
 #include "ui_video_face_detection.h"
 
 namespace Ui 
@@ -18,10 +21,15 @@ class VideoFaceDetection : public QWidget
   explicit VideoFaceDetection(QWidget *parent = Q_NULLPTR);
   ~VideoFaceDetection();
 
-  void loadVideo();
+  void loadVideo(const QString &fileName);
   void setImage();
   void saveImage();
-
+  void onSlide( int pos);
+ private:
+  cv::VideoCapture cap;
+  int frames;
+  int video_width;
+  int video_height;
 };
 
 #endif // VIDEO_FACE_DETECTION_HPP

@@ -9,11 +9,13 @@ find_package( OpenCV REQUIRED )
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
+find_package( OpenCV REQUIRED )
 
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${Qt5Core_INCLUDE_DIRS})
 include_directories(${PROJECT_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 include_directories(include)
 
 set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
@@ -42,6 +44,8 @@ add_library(video_face_detection
 						 ${VIDEO_FACE_DETECTION_UISrcs}
 )
 
+target_link_libraries(video_face_detection
+	${OpenCV_LIBS})
 
 add_executable(qt_video_app ${MAIN_MOCrcs} ${MAIN_APP_SRC})
 

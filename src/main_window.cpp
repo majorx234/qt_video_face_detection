@@ -1,3 +1,4 @@
+#include <string>
 #include <QtWidgets>
 
 #include "main_window.hpp"
@@ -12,7 +13,7 @@ MainWindow::MainWindow()
 }
 
 void MainWindow::loadFile(const QString &fileName) {
-
+  this->main_video_widget->loadVideo(fileName);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) 
@@ -64,3 +65,4 @@ bool MainWindow::saveFile(const QString &fileName)
 {
   return true;
 }
+
