@@ -22,14 +22,19 @@ class VideoFaceDetection : public QWidget
   ~VideoFaceDetection();
 
   void loadVideo(const QString &fileName);
-  void setImage();
+  void setSlider(unsigned int steps);
+  void setImage(QImage image);
   void saveImage();
+ public slots:  
   void onSlide( int pos);
  private:
   cv::VideoCapture cap;
   int frames;
   int video_width;
   int video_height;
+
+  int label_width;
+  int label_height;
 };
 
 #endif // VIDEO_FACE_DETECTION_HPP

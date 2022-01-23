@@ -22,8 +22,6 @@
 
 #include "video_face_detection.hpp"
 
-
-
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
