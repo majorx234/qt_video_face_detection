@@ -23,8 +23,12 @@ set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
                   ${CMAKE_CURRENT_SOURCE_DIR}/src/main_window.cpp
 )
 
-set(VIDEO_FACE_DETECTION_SRC ${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
-                              ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp)
+set(VIDEO_FACE_DETECTION_SRC
+	${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/include/qclicklabel.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/qclicklabel.cpp)
+
 
 QT5_WRAP_UI(VIDEO_FACE_DETECTION_UISrcs 
             ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.ui)

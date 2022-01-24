@@ -26,7 +26,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLabel" name="videoLabel">
+       <widget class="QClickLabel" name="videoLabel">
         <property name="minimumSize">
          <size>
           <width>800</width>
@@ -35,6 +35,9 @@
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
         </property>
        </widget>
       </item>
@@ -131,6 +134,13 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QClickLabel</class>
+   <extends>QLabel</extends>
+   <header>qclicklabel.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
