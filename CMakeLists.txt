@@ -29,6 +29,14 @@ set(VIDEO_FACE_DETECTION_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/include/qclicklabel.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/qclicklabel.cpp)
 
+set(IMAGE_LIST_SRC
+	${CMAKE_CURRENT_SOURCE_DIR}/include/image_item.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/image_item.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/include/image_list_model.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_model.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/include/image_list_delegate.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_delegate.cpp
+	)
 
 QT5_WRAP_UI(VIDEO_FACE_DETECTION_UISrcs 
             ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.ui)
@@ -39,8 +47,18 @@ QT5_WRAP_CPP(MAIN_MOCrcs
 
 QT5_WRAP_CPP(VIDEO_FACE_DETECTION_MOCrcs
 						  ${VIDEO_FACE_DETECTION_SRC}
+							)
+
+QT5_WRAP_CPP(IMAGE_LIST_MOCrcs
+						  ${IMAGE_LIST_SRC}
 )
+						
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
+
+add_library(image_list
+	${IMAGE_LIST_SRC}
+	${IMAGE_LIST_MOCrcs}
+	)
 
 add_library(video_face_detection
 	           ${VIDEO_FACE_DETECTION_MOCrcs}
@@ -57,5 +75,6 @@ target_link_libraries(qt_video_app
 	video_face_detection
 	)
 
+qt5_use_modules(image_list Core Gui Widgets)
 qt5_use_modules(qt_video_app Core Gui Widgets)
 qt5_use_modules(video_face_detection Core Gui Widgets)

@@ -1,18 +1,17 @@
 #ifndef VIDEO_FACE_DETECTION_HPP
 #define VIDEO_FACE_DETECTION_HPP
+
 #include <QtWidgets>
 #include <opencv2/opencv.hpp> 
 #include "opencv2/imgproc/imgproc.hpp"
 
 #include "ui_video_face_detection.h"
 
-namespace Ui 
-{
-  class VideoFaceDetection;
+namespace Ui {
+class VideoFaceDetection;
 }
 
-class VideoFaceDetection : public QWidget
-{
+class VideoFaceDetection : public QWidget {
   Q_OBJECT
  private:
   Ui::video_face_detection *ui;
