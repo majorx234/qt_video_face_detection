@@ -13,6 +13,7 @@ class ImageListModel : public QAbstractItemModel {
   int columnCount(const QModelIndex& parent = QModelIndex()) const;
   QVariant data(const QModelIndex &index, int role) const;
   void populate();
+  void append(cv::Mat cv_image);
   std::vector<ImageItem> list;
 };
 
