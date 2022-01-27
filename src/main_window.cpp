@@ -35,7 +35,9 @@ void MainWindow::open()
 {
   QString fileName = QFileDialog::getOpenFileName(this,
     tr("Open Video"), "~", tr("Video Files (*.mp4)"));
-  loadFile(fileName);
+  if (!fileName.isEmpty()) {
+        loadFile(fileName);
+    } 
 }
 bool MainWindow::save()
 {

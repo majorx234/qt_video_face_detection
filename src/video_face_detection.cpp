@@ -3,8 +3,11 @@
 #include <opencv2/opencv.hpp> 
 #include "opencv2/imgproc/imgproc.hpp"
 
+#include "image_list_model.hpp"
+#include "image_list_delegate.hpp"
 #include "video_face_detection.hpp"
 #include "ui_video_face_detection.h"
+
 
 VideoFaceDetection::VideoFaceDetection(QWidget *parent)
     : QWidget(parent)
@@ -19,6 +22,15 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent)
   ui->setupUi(this);
   //ui->videoProgressSlider event valueChanged()
   connect(ui->videoProgressSlider, SIGNAL(valueChanged(int)), SLOT(onSlide(int)));
+
+  selectedFacesListModel = new ImageListModel();
+  selectedFacesListDelegate = new ImageListDelegate();
+
+  ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
+  ui->selectedFacesListView->setModel(selectedFacesListModel);
+  
+  connect(ui->videoLabel,SIGNAL(clicked()),SLOT(cropVideoImage()));
+  // idea of graphic scene n.i.y.
   //scene = new QGraphicsScene();
   //ui->graphicsView->setScene(scene);
 }
@@ -37,6 +49,7 @@ void VideoFaceDetection::loadVideo(const QString &fileName) {
   setSlider(frames);
   cv::Mat frame;
   cap >> frame;
+  setLastImage(frame.clone());
   QImage image = QImage(static_cast<uchar*>(frame.data), frame.cols, frame.rows, frame.step, QImage::Format_BGR888);
   QImage scaled_image = scaledImageToLabel(image); 
   setImage(scaled_image);
@@ -63,7 +76,7 @@ QImage VideoFaceDetection::scaledImageToLabel(QImage qt_image) {
  
 void VideoFaceDetection::setSlider(unsigned int steps) {
    ui->videoProgressSlider->setMinimum(0);
-   ui->videoProgressSlider->setMaximum(steps);
+   ui->videoProgressSlider->setMaximum(steps-1);
    ui->videoProgressSlider->setSingleStep(1);
 }
 
@@ -82,8 +95,17 @@ void VideoFaceDetection::onSlide( int pos) {
   cv::Mat frame;
   cap.set( cv::CAP_PROP_POS_FRAMES, pos);
   cap >> frame;
+  setLastImage(frame.clone());
   QImage image = QImage(static_cast<uchar*>(frame.data), frame.cols, frame.rows, frame.step, QImage::Format_BGR888);
   QImage scaled_image = scaledImageToLabel(image); 
   setImage(scaled_image);
   //  setImage(image);
+}
+
+void VideoFaceDetection::setLastImage(cv::Mat image) {
+  last_image = image;
+}
+
+void VideoFaceDetection::cropVideoImage() {
+  selectedFacesListModel->append(last_image);  
 }

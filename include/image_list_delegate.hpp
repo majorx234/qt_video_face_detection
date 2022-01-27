@@ -1,3 +1,6 @@
+#ifndef IMAGE_LIST_DELEGATE_HPP
+#define IMAGE_LIST_DELEGATE_HPP
+
 #include <QStyledItemDelegate>
 #include <QEvent>
 
@@ -11,3 +14,5 @@ class ImageListDelegate : public QStyledItemDelegate {
  signals:
   void on_clicked(int, Qt::MouseButton);
 };
+
+#endif // IMAGE_LIST_DELEGATE_HPP

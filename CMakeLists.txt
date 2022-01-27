@@ -58,7 +58,7 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 add_library(image_list
 	${IMAGE_LIST_SRC}
 	${IMAGE_LIST_MOCrcs}
-	)
+)
 
 add_library(video_face_detection
 	           ${VIDEO_FACE_DETECTION_MOCrcs}
@@ -67,7 +67,9 @@ add_library(video_face_detection
 )
 
 target_link_libraries(video_face_detection
-	${OpenCV_LIBS})
+	${OpenCV_LIBS}
+	image_list
+)
 
 add_executable(qt_video_app ${MAIN_MOCrcs} ${MAIN_APP_SRC})
 
