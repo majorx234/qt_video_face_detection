@@ -20,10 +20,17 @@ void ImageListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 }
 QSize ImageListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
   QVariant data = index.data();
-  ImageItem *item = data.value<ImageItem*>();
-  int height = item->get_thumbnail().rows;
-  int width = item->get_thumbnail().cols;
-  return QSize(width,height);
+  int row = index.row();
+  int column = index.column();
+  qDebug() << "ImageListDelegate::sizeHint: row " << row << " column: " << column;
+  qDebug() << "typeName:" << data.typeName();
+  if (row >= 0) {
+    ImageItem *item = data.value<ImageItem*>();
+    int height = item->get_thumbnail().rows;
+    int width = item->get_thumbnail().cols;
+    return QSize(width,height);
+  }
+  return QSize(128,128);
 }
 
 bool ImageListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
