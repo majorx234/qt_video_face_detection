@@ -8,9 +8,10 @@ class ImageListDelegate : public QStyledItemDelegate {
   Q_OBJECT
  public:
   ImageListDelegate(QObject * patent = nullptr);
-  void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index);
-  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;      
-  bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+
+  void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;      
+  bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
  signals:
   void on_clicked(int, Qt::MouseButton);
 };

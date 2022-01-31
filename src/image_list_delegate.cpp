@@ -5,32 +5,33 @@
 
 #include <QDebug> 
 
-ImageListDelegate::ImageListDelegate(QObject *patent) {
+ImageListDelegate::ImageListDelegate(QObject *patent)
+    : QStyledItemDelegate() {
   
 }
-void ImageListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) {
-  qDebug() << "ImageListDelegate::paint: ";
+void ImageListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
   QVariant data = index.data();
   ImageItem* item = data.value<ImageItem*>();
-  painter->save();
-  cv::Mat cv_thumbnail = item->get_thumbnail().clone();
-  QImage qt_thumbnail = QImage((uchar*)cv_thumbnail.data, cv_thumbnail.cols, cv_thumbnail.rows, cv_thumbnail.step, QImage::Format_BGR888);
-  painter->drawImage(option.rect.left(), option.rect.top(),qt_thumbnail);
-  painter->restore();
+  if (data.canConvert<ImageItem*>()) {
+    painter->save();
+    cv::Mat cv_thumbnail = item->get_thumbnail().clone();
+    QImage qt_thumbnail = QImage((uchar*)cv_thumbnail.data, cv_thumbnail.cols, cv_thumbnail.rows, cv_thumbnail.step, QImage::Format_BGR888);
+    painter->drawImage(option.rect.left(), option.rect.top(),qt_thumbnail);
+    painter->restore();
+  }
 }
-QSize ImageListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+QSize ImageListDelegate::sizeHint(const QStyleOptionViewItem &option,
+                                  const QModelIndex &index) const {
   QVariant data = index.data();
   int row = index.row();
   int column = index.column();
-  qDebug() << "ImageListDelegate::sizeHint: row " << row << " column: " << column;
-  qDebug() << "typeName:" << data.typeName();
-  if (row >= 0) {
+  if (data.canConvert<ImageItem*>()) {
     ImageItem *item = data.value<ImageItem*>();
     int height = item->get_thumbnail().rows;
     int width = item->get_thumbnail().cols;
     return QSize(width,height);
   }
-  return QSize(128,128);
+  return QSize();
 }
 
 bool ImageListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,

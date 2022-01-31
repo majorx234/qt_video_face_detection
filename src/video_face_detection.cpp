@@ -24,7 +24,7 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent)
   connect(ui->videoProgressSlider, SIGNAL(valueChanged(int)), SLOT(onSlide(int)));
 
   selectedFacesListModel = new ImageListModel();
-  selectedFacesListDelegate = new ImageListDelegate();
+  selectedFacesListDelegate = new ImageListDelegate(ui->selectedFacesListView);
 
   ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
   ui->selectedFacesListView->setModel(selectedFacesListModel);

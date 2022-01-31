@@ -19,13 +19,13 @@ INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 include_directories(include)
 
 set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
-  	              ${CMAKE_CURRENT_SOURCE_DIR}/include/main_window.hpp
-                  ${CMAKE_CURRENT_SOURCE_DIR}/src/main_window.cpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/include/main_window.hpp
+                 ${CMAKE_CURRENT_SOURCE_DIR}/src/main_window.cpp
 )
 
 set(VIDEO_FACE_DETECTION_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/include/qclicklabel.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/qclicklabel.cpp)
 
@@ -67,8 +67,8 @@ add_library(image_list
 
 add_library(video_face_detection
 	           ${VIDEO_FACE_DETECTION_MOCrcs}
-						 ${VIDEO_FACE_DETECTION_SRC}
-						 ${VIDEO_FACE_DETECTION_UISrcs}
+                   ${VIDEO_FACE_DETECTION_SRC}
+                   ${VIDEO_FACE_DETECTION_UISrcs}
 )
 
 target_link_libraries(video_face_detection
