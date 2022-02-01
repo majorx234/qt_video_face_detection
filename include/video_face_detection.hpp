@@ -28,7 +28,6 @@ class VideoFaceDetection : public QWidget {
   void setImage(QImage &image);
   void saveImage();
  private:
-  QImage scaledImageToLabel(QImage qt_image);
   void setLastImage(cv::Mat);                                         
  public slots:  
   void onSlide( int pos);

@@ -41,6 +41,11 @@ set(IMAGE_LIST_SRC
 set(IMAGE_FILTER_SRC
 	${CMAKE_CURRENT_SOURCE_DIR}/include/image_filter.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/image_filter.cpp
+	)
+
+set(CV_UTILS_SRC
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/cv_utils.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/cv_utils.cpp
 )
 
 QT5_WRAP_UI(VIDEO_FACE_DETECTION_UISrcs 
@@ -67,8 +72,8 @@ add_library(image_list
 
 add_library(video_face_detection
 	           ${VIDEO_FACE_DETECTION_MOCrcs}
-                   ${VIDEO_FACE_DETECTION_SRC}
-                   ${VIDEO_FACE_DETECTION_UISrcs}
+             ${VIDEO_FACE_DETECTION_SRC}
+             ${VIDEO_FACE_DETECTION_UISrcs}
 )
 
 target_link_libraries(video_face_detection
@@ -80,6 +85,10 @@ add_library(image_filter
 	${IMAGE_FILTER_SRC}
 )
 
+add_library(cv_utils
+	${CV_UTILS_SRC}
+)
+
 target_link_libraries(image_filter
 	${OpenCV_LIBS}
 )
@@ -88,6 +97,7 @@ add_executable(qt_video_app ${MAIN_MOCrcs} ${MAIN_APP_SRC})
 
 target_link_libraries(qt_video_app
 	video_face_detection
+	cv_utils
 	)
 
 qt5_use_modules(image_list Core Gui Widgets)

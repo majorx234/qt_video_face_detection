@@ -8,6 +8,7 @@
 #include "video_face_detection.hpp"
 #include "ui_video_face_detection.h"
 
+#include "cv_utils.hpp"
 
 VideoFaceDetection::VideoFaceDetection(QWidget *parent)
     : QWidget(parent)
@@ -45,33 +46,15 @@ void VideoFaceDetection::loadVideo(const QString &fileName) {
   frames = static_cast<int>( cap.get(cv::CAP_PROP_FRAME_COUNT));
   video_width  = static_cast<int>( cap.get(cv::CAP_PROP_FRAME_WIDTH));
   video_height = static_cast<int>(cap.get(cv::CAP_PROP_FRAME_HEIGHT));
-  
+    
   setSlider(frames);
   cv::Mat frame;
   cap >> frame;
   setLastImage(frame.clone());
-  QImage image = QImage(static_cast<uchar*>(frame.data), frame.cols, frame.rows, frame.step, QImage::Format_BGR888);
-  QImage scaled_image = scaledImageToLabel(image); 
-  setImage(scaled_image);
-
-}
-QImage VideoFaceDetection::scaledImageToLabel(QImage qt_image) {
-  double ratio = static_cast<double>(video_width) / static_cast<double>(video_height); 
-  scale_factor_width = 1.0;
-  scale_factor_height = 1.0;
-  if (ratio == 1.0) {
-    scale_factor_width  = static_cast<double>(label_width) / static_cast<double>(video_width);
-    scale_factor_height = static_cast<double>(label_height) / static_cast<double>(video_height);
-    return qt_image.scaledToWidth(label_width, Qt::SmoothTransformation);
-  } else if (ratio < 1.0) {
-    scale_factor_height = static_cast<double>(label_height) / static_cast<double>(video_height);
-    scale_factor_width = scale_factor_height;
-    return qt_image.scaledToWidth(label_width,Qt::SmoothTransformation);
-  } else { // ratio > 1.0
-    scale_factor_width  = static_cast<double>(label_width) / static_cast<double>(video_width);
-    scale_factor_height = scale_factor_width;
-    return qt_image.scaledToWidth(label_width, Qt::SmoothTransformation);
-  }
+  cv::Mat cv_scaled_image = scaledImageToConstrains(frame,label_width,label_height);
+  QImage qt_scaled_image = QImage(static_cast<uchar*>(cv_scaled_image.data), cv_scaled_image.cols, cv_scaled_image.rows, cv_scaled_image.step, QImage::Format_BGR888);
+   
+  setImage(qt_scaled_image);
 }
  
 void VideoFaceDetection::setSlider(unsigned int steps) {
@@ -96,10 +79,11 @@ void VideoFaceDetection::onSlide( int pos) {
   cap.set( cv::CAP_PROP_POS_FRAMES, pos);
   cap >> frame;
   setLastImage(frame.clone());
-  QImage image = QImage(static_cast<uchar*>(frame.data), frame.cols, frame.rows, frame.step, QImage::Format_BGR888);
-  QImage scaled_image = scaledImageToLabel(image); 
-  setImage(scaled_image);
-  //  setImage(image);
+
+  cv::Mat cv_scaled_image = scaledImageToConstrains(frame,label_width,label_height);
+  QImage qt_scaled_image = QImage(static_cast<uchar*>(cv_scaled_image.data), cv_scaled_image.cols, cv_scaled_image.rows, cv_scaled_image.step, QImage::Format_BGR888);
+   
+  setImage(qt_scaled_image);
 }
 
 void VideoFaceDetection::setLastImage(cv::Mat image) {

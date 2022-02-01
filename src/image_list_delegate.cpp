@@ -9,6 +9,7 @@ ImageListDelegate::ImageListDelegate(QObject *patent)
     : QStyledItemDelegate() {
   
 }
+
 void ImageListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
   QVariant data = index.data();
   ImageItem* item = data.value<ImageItem*>();
@@ -20,6 +21,7 @@ void ImageListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
     painter->restore();
   }
 }
+
 QSize ImageListDelegate::sizeHint(const QStyleOptionViewItem &option,
                                   const QModelIndex &index) const {
   QVariant data = index.data();
@@ -47,6 +49,5 @@ bool ImageListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     int item_index = index.row();
     emit on_clicked(item_index,button);
   }
-
   return true;  
 }
