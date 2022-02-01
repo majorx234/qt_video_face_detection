@@ -25,8 +25,10 @@ class VideoFaceDetection : public QWidget {
 
   void loadVideo(const QString &fileName);
   void setSlider(unsigned int steps);
-  void setImage(QImage &image);
+  void setImage(cv::Mat image);
   void saveImage();
+  void setFaces(std::vector<cv::Rect> new_faces);
+  void clearFaces();
  private:
   void setLastImage(cv::Mat);                                         
  public slots:  
@@ -44,7 +46,9 @@ class VideoFaceDetection : public QWidget {
   double scale_factor_width;
   double scale_factor_height;
 
-  ImageListModel* selectedFacesListModel;
+  std::vector<cv::Rect> faces;
+
+  ImageListModel *selectedFacesListModel;
   ImageListDelegate* selectedFacesListDelegate;
 };
 

@@ -79,6 +79,8 @@ add_library(video_face_detection
 target_link_libraries(video_face_detection
 	${OpenCV_LIBS}
 	image_list
+	cv_utils
+	image_filter
 )
 
 add_library(image_filter
@@ -97,7 +99,6 @@ add_executable(qt_video_app ${MAIN_MOCrcs} ${MAIN_APP_SRC})
 
 target_link_libraries(qt_video_app
 	video_face_detection
-	cv_utils
 	)
 
 qt5_use_modules(image_list Core Gui Widgets)

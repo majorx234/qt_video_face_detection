@@ -28,3 +28,28 @@ cv::Mat scaledImageToConstrains(cv::Mat cv_image, size_t label_width, size_t lab
   return resized_image;
 }
 
+bool
+cut_selecteced_rectangle_from_image(cv::Mat cv_image, cv::Mat &cv_dst_image, int p_x, int p_y, 
+                                    std::vector<cv::Rect> rectangle_list) {
+  if (rectangle_list.size() > 0) {
+    for (cv::Rect &rectangle : rectangle_list) {
+      if ((p_y > rectangle.y) and (p_y < rectangle.y + rectangle.height) and (p_x > rectangle.x) and (p_x < rectangle.x + rectangle.width)) {
+        cv_dst_image = cv_image(rectangle);
+        return true;
+      }
+    }
+  }
+  return false; 
+}
+
+void draw_rectangle_in_image(cv::Mat &cv_image,
+                             const std::vector<cv::Rect> &rectangle_list,
+                             const cv::Scalar &color) {
+  if (rectangle_list.size() > 0) {
+    for (cv::Rect r : rectangle_list) {
+      cv::rectangle(cv_image,  r,color, 2); 	
+    }
+  }
+}
+
+    
