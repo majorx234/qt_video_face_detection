@@ -67,11 +67,10 @@ void VideoFaceDetection::setImage(cv::Mat cv_image) {
     
     std::vector<cv::Rect> new_faces = haarcascade_face_detection(cv_image);
     //setFaces(new_faces);
-    cv::Scalar red( 255,0,0 );
+    cv::Scalar red( 0, 0, 255 );
     draw_rectangle_in_image(cv_image_with_faces, new_faces, red);
-  } else {
+  } 
     
-  }
   cv::Mat cv_scaled_image = scaledImageToConstrains(cv_image_with_faces,label_width,label_height);
   QImage qt_image = QImage(static_cast<uchar*>(cv_scaled_image.data), cv_scaled_image.cols, cv_scaled_image.rows, cv_scaled_image.step, QImage::Format_BGR888);
   QPixmap vidPixmap = QPixmap::fromImage(qt_image);
@@ -99,9 +98,9 @@ void VideoFaceDetection::cropVideoImage() {
   selectedFacesListModel->append(last_image);  
 }
 
-void VideoFaceDetection::setFaces(std::vector<cv::Rect> new_faces) {
+void VideoFaceDetection::setFaces(std::vector<cv::Rect> &new_faces) {
   this->faces.clear();
-  this->faces.insert(new_faces.end(), new_faces.begin(), new_faces.end());
+  this->faces.insert(faces.end(), new_faces.begin(), new_faces.end());
 }
 
 void VideoFaceDetection::clearFaces() {

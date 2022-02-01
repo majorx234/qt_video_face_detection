@@ -27,7 +27,7 @@ class VideoFaceDetection : public QWidget {
   void setSlider(unsigned int steps);
   void setImage(cv::Mat image);
   void saveImage();
-  void setFaces(std::vector<cv::Rect> new_faces);
+  void setFaces(std::vector<cv::Rect> &new_faces);
   void clearFaces();
  private:
   void setLastImage(cv::Mat);                                         
