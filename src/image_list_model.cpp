@@ -55,6 +55,11 @@ void ImageListModel::append(cv::Mat cv_image) {
   int column = index.column();
 }
 
+void ImageListModel::saveItemAt(int index, std::string filename) {
+  list.at(index)->save_image(filename);
+}
+
+
 void ImageListModel::data_changed(ImageItem* item, const QModelIndex &index) {
   QVariant v;
   v.setValue(item);

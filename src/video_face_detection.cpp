@@ -30,6 +30,8 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent)
 
   ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
   ui->selectedFacesListView->setModel(selectedFacesListModel);
+  ui->selectedFacesListView->setContextMenuPolicy( Qt::CustomContextMenu );
+  connect(ui->selectedFacesListView, &QListView::customContextMenuRequested,this,&VideoFaceDetection::onContextMenu);
   
   connect(ui->videoLabel, &QClickLabel::clicked, this, &VideoFaceDetection::getFaceAtPos);
   // idea of graphic scene n.i.y.
@@ -41,6 +43,29 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent)
 VideoFaceDetection::~VideoFaceDetection() {
 
 }
+
+void VideoFaceDetection::onContextMenu(QPoint pose) {
+  QModelIndex model_index = ui->selectedFacesListView->indexAt(pose);
+  int index = model_index.row();
+  QMenu *menu = new QMenu(this);
+  QAction *save_img = new QAction("Save",this);
+  QAction *delete_img = new QAction("Delete", this);
+  QAction *save_all_img = new QAction("SaveAll", this);
+
+  menu->addAction(save_img);
+  menu->addAction(delete_img);
+  menu->addAction(save_all_img);
+  //menu->popup(ui->selectedFacesListView->viewport()->mapToGlobal(pose));
+  QAction* choosen_action = menu->exec(ui->selectedFacesListView->viewport()->mapToGlobal(pose));
+  if (choosen_action == save_img) {
+    QString filename = QFileDialog::getSaveFileName(this,
+    tr("Save Image"), "~", tr("JPG (*.jpg);;PNG (*.png);;TIFF (*.tiff);;BMP (*.bmp)"));
+  if (!filename.isEmpty()) {
+    selectedFacesListModel->saveItemAt(index, filename.toStdString());
+    } 
+  }
+}
+
 
 void VideoFaceDetection::loadVideo(const QString &fileName) {
   cap.open( fileName.toStdString() );
@@ -54,7 +79,7 @@ void VideoFaceDetection::loadVideo(const QString &fileName) {
   setLastImage(frame.clone());
   setImage(frame);
 }
- 
+
 void VideoFaceDetection::setSlider(unsigned int steps) {
    ui->videoProgressSlider->setMinimum(0);
    ui->videoProgressSlider->setMaximum(steps-1);

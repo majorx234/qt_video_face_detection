@@ -42,12 +42,13 @@ bool ImageListDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
   if (!index.isValid()) {
         return false;
   }
-  
+   
   if (event->type() == QEvent::MouseButtonPress) {
     auto mouseEvent = static_cast<QMouseEvent*>(event);
     Qt::MouseButton button = mouseEvent->button();
     int item_index = index.row();
-    emit on_clicked(item_index,button);
+    emit on_clicked(item_index, button);
   }
   return true;  
 }
+

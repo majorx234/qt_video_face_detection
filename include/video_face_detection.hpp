@@ -35,6 +35,7 @@ class VideoFaceDetection : public QWidget {
   void onSlide( int pos);
   void cropVideoImage();
   void getFaceAtPos(int x, int y);
+  void onContextMenu(QPoint pose);
  private:
   cv::VideoCapture cap;
   cv::Mat last_image;

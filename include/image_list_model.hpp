@@ -2,6 +2,7 @@
 #define IMAGE_LIST_MODEL_HPP
 
 #include <QAbstractListModel>
+#include <string>
 #include <vector>
 #include "image_item.hpp"
 
@@ -17,6 +18,7 @@ class ImageListModel : public QAbstractItemModel {
   QModelIndex parent(const QModelIndex&) const override;
   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
   void append(cv::Mat cv_image);
+  void saveItemAt(int index, std::string filename);
   std::vector<ImageItem*> list;
   Qt::ItemFlags flags(const QModelIndex &index) const override;
  public slots: 

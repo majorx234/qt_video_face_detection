@@ -12,7 +12,10 @@ class ImageListDelegate : public QStyledItemDelegate {
   void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
   QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;      
   bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
+
  signals:
+  void customContextMenuRequested(const QPoint &pos);
+
   void on_clicked(int, Qt::MouseButton);
 };
 

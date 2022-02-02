@@ -17,3 +17,7 @@ cv::Mat ImageItem::get_image() {
 cv::Mat ImageItem::get_thumbnail() {
   return this->thumbnail;
 }
+
+void ImageItem::save_image(std::string filename) {
+  cv::imwrite(filename, this->image);
+}

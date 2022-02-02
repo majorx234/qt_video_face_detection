@@ -1,6 +1,7 @@
 #ifndef INCLUDE_IMAGE_ITEM_HPP_
 #define INCLUDE_IMAGE_ITEM_HPP_
 
+#include <string>
 #include <QObject>
 #include <QVariant>
 #include <opencv2/opencv.hpp>
@@ -17,6 +18,7 @@ class ImageItem : public QObject {
   void set_image(cv::Mat cv_image);
   cv::Mat get_image();
   cv::Mat get_thumbnail();
+  void save_image(std::string filename);
  signals:
   void valueChanged();
  private:
