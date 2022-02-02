@@ -13,7 +13,7 @@ public:
     ~QClickLabel();
 
 signals:
-    void clicked();
+  void clicked(int x,int y);
 
 protected:
     void mousePressEvent(QMouseEvent* event);

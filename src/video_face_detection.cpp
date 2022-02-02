@@ -31,7 +31,7 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent)
   ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
   ui->selectedFacesListView->setModel(selectedFacesListModel);
   
-  connect(ui->videoLabel,SIGNAL(clicked()),SLOT(cropVideoImage()));
+  connect(ui->videoLabel, &QClickLabel::clicked, this, &VideoFaceDetection::getFaceAtPos);
   // idea of graphic scene n.i.y.
   //scene = new QGraphicsScene();
   //ui->graphicsView->setScene(scene);
@@ -66,12 +66,12 @@ void VideoFaceDetection::setImage(cv::Mat cv_image) {
   if (ui->faceDetectionCheckBox->isChecked()) {
     
     std::vector<cv::Rect> new_faces = haarcascade_face_detection(cv_image);
-    //setFaces(new_faces);
+    setFaces(new_faces);
     cv::Scalar red( 0, 0, 255 );
     draw_rectangle_in_image(cv_image_with_faces, new_faces, red);
   } 
     
-  cv::Mat cv_scaled_image = scaledImageToConstrains(cv_image_with_faces,label_width,label_height);
+  cv::Mat cv_scaled_image = scaledImageToConstrains(cv_image_with_faces,label_width,label_height, scale_factor_width, scale_factor_height);
   QImage qt_image = QImage(static_cast<uchar*>(cv_scaled_image.data), cv_scaled_image.cols, cv_scaled_image.rows, cv_scaled_image.step, QImage::Format_BGR888);
   QPixmap vidPixmap = QPixmap::fromImage(qt_image);
   ui->videoLabel->setPixmap(vidPixmap);
@@ -96,6 +96,15 @@ void VideoFaceDetection::setLastImage(cv::Mat image) {
 
 void VideoFaceDetection::cropVideoImage() {
   selectedFacesListModel->append(last_image);  
+}
+
+void VideoFaceDetection::getFaceAtPos(int x, int y) {
+  int p_x = static_cast<int>(x / scale_factor_width);
+  int p_y = static_cast<int>(y / scale_factor_height);
+  cv::Mat face_image;
+  bool success = cut_selecteced_rectangle_from_image(last_image, face_image, p_x, p_y, faces ); 
+  if(success)
+    selectedFacesListModel->append(face_image);
 }
 
 void VideoFaceDetection::setFaces(std::vector<cv::Rect> &new_faces) {
