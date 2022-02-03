@@ -60,9 +60,14 @@ void VideoFaceDetection::onContextMenu(QPoint pose) {
   if (choosen_action == save_img) {
     QString filename = QFileDialog::getSaveFileName(this,
     tr("Save Image"), "~", tr("JPG (*.jpg);;PNG (*.png);;TIFF (*.tiff);;BMP (*.bmp)"));
-  if (!filename.isEmpty()) {
-    selectedFacesListModel->saveItemAt(index, filename.toStdString());
-    } 
+    if (!filename.isEmpty()) {
+      selectedFacesListModel->saveItemAt(index, filename.toStdString());
+    }
+  } else if (choosen_action == save_all_img) {
+    QString filename = QFileDialog::getExistingDirectory(this, tr("~"));
+    if (!filename.isEmpty()) {
+      selectedFacesListModel->saveItems(filename.toStdString());
+    }
   }
 }
 

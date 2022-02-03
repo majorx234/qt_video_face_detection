@@ -1,4 +1,6 @@
 #include "image_list_model.hpp"
+#include <string>
+#include <sstream>
 #include <QDebug> 
 
 ImageListModel::ImageListModel(QObject *parent)
@@ -58,6 +60,15 @@ void ImageListModel::append(cv::Mat cv_image) {
 void ImageListModel::saveItemAt(int index, std::string filename) {
   list.at(index)->save_image(filename);
 }
+
+void ImageListModel::saveItems(std::string foldername) {
+  for (int i = 0;i < list.size();i++) {
+    ImageItem *item = list[i];
+    std::stringstream ss;
+    ss << foldername << "/" << (i+1) << ".jpg";
+    item->save_image(ss.str());
+  }
+} 
 
 
 void ImageListModel::data_changed(ImageItem* item, const QModelIndex &index) {

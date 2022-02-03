@@ -19,6 +19,7 @@ class ImageListModel : public QAbstractItemModel {
   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
   void append(cv::Mat cv_image);
   void saveItemAt(int index, std::string filename);
+  void saveItems(std::string foldername);
   std::vector<ImageItem*> list;
   Qt::ItemFlags flags(const QModelIndex &index) const override;
  public slots: 
