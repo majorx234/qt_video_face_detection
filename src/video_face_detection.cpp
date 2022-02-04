@@ -39,9 +39,7 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent)
   //ui->graphicsView->setScene(scene);
 }
 
-
 VideoFaceDetection::~VideoFaceDetection() {
-
 }
 
 void VideoFaceDetection::onContextMenu(QPoint pose) {
@@ -49,12 +47,12 @@ void VideoFaceDetection::onContextMenu(QPoint pose) {
   int index = model_index.row();
   QMenu *menu = new QMenu(this);
   QAction *save_img = new QAction("Save",this);
-  QAction *delete_img = new QAction("Delete", this);
   QAction *save_all_img = new QAction("SaveAll", this);
+  QAction *delete_img = new QAction("Delete", this);
 
   menu->addAction(save_img);
-  menu->addAction(delete_img);
   menu->addAction(save_all_img);
+  menu->addAction(delete_img);
   //menu->popup(ui->selectedFacesListView->viewport()->mapToGlobal(pose));
   QAction* choosen_action = menu->exec(ui->selectedFacesListView->viewport()->mapToGlobal(pose));
   if (choosen_action == save_img) {
@@ -68,9 +66,10 @@ void VideoFaceDetection::onContextMenu(QPoint pose) {
     if (!filename.isEmpty()) {
       selectedFacesListModel->saveItems(filename.toStdString());
     }
+  } else if (choosen_action == delete_img) {
+    selectedFacesListModel->deleteItem(index);
   }
 }
-
 
 void VideoFaceDetection::loadVideo(const QString &fileName) {
   cap.open( fileName.toStdString() );

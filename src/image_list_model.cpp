@@ -18,7 +18,6 @@ int ImageListModel::rowCount(const QModelIndex &parent) const {
   return list.size();
 }
 
-
 int ImageListModel::columnCount(const QModelIndex &parent ) const {
   if (list.size() > 0)
     return 1;
@@ -51,10 +50,15 @@ void ImageListModel::append(cv::Mat cv_image) {
   //connect(new_item,SIGNAL(valueChanged()),SLOT(dataChanged()));
   list.push_back(new_item);
   int list_index = list.size()-1;
-  QModelIndex index = createIndex(list_index, 0, new_item);
-  emit dataChanged(index, index, {Qt::EditRole});
-  int row = index.row();
-  int column = index.column();
+  QModelIndex model_index = createIndex(list_index, 0, new_item);
+  emit dataChanged(model_index, model_index, {Qt::EditRole});
+}
+
+void ImageListModel::deleteItem(int index) {
+  list.erase(list.begin() + index);
+  int list_index = list.size()-1;
+  QModelIndex model_index = createIndex(list_index, 0, list[list_index]);
+  emit dataChanged(model_index, model_index, {Qt::EditRole});
 }
 
 void ImageListModel::saveItemAt(int index, std::string filename) {
@@ -69,7 +73,6 @@ void ImageListModel::saveItems(std::string foldername) {
     item->save_image(ss.str());
   }
 } 
-
 
 void ImageListModel::data_changed(ImageItem* item, const QModelIndex &index) {
   QVariant v;

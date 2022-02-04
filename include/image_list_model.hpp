@@ -18,6 +18,7 @@ class ImageListModel : public QAbstractItemModel {
   QModelIndex parent(const QModelIndex&) const override;
   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
   void append(cv::Mat cv_image);
+  void deleteItem(int index);
   void saveItemAt(int index, std::string filename);
   void saveItems(std::string foldername);
   std::vector<ImageItem*> list;
