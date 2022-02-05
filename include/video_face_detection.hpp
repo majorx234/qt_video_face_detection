@@ -30,15 +30,18 @@ class VideoFaceDetection : public QWidget {
   void setFaces(std::vector<cv::Rect> &new_faces);
   void clearFaces();
  private:
-  void setLastImage(cv::Mat);                                         
+  void setLastImage(cv::Mat);
+  cv::Mat getLastImage();                          
  public slots:  
   void onSlide( int pos);
+  void onChangeFacedetection();
   void cropVideoImage();
   void getFaceAtPos(int x, int y);
   void onContextMenu(QPoint pose);
  private:
   cv::VideoCapture cap;
   cv::Mat last_image;
+  bool video_loaded;
   int frames;
   int video_width;
   int video_height;

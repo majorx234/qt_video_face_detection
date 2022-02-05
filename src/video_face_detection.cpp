@@ -12,31 +12,28 @@
 #include "image_filter.hpp"
 
 VideoFaceDetection::VideoFaceDetection(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::video_face_detection)
-    , frames(0)
-    , video_width(0)
-    , video_height(0)
-    , label_width(800)
-    , label_height(600)
-    , scale_factor_width(1.0)
-    , scale_factor_height(1.0) {
-  ui->setupUi(this);
-  //ui->videoProgressSlider event valueChanged()
-  connect(ui->videoProgressSlider, SIGNAL(valueChanged(int)), SLOT(onSlide(int)));
+    : QWidget(parent), ui(new Ui::video_face_detection), frames(0),
+      video_width(0), video_height(0), label_width(800), label_height(600),
+      scale_factor_width(1.0), scale_factor_height(1.0), video_loaded(false) {
+ui->setupUi(this);
+// ui->videoProgressSlider event valueChanged()
+connect(ui->videoProgressSlider, SIGNAL(valueChanged(int)), SLOT(onSlide(int)));
 
-  selectedFacesListModel = new ImageListModel();
-  selectedFacesListDelegate = new ImageListDelegate(ui->selectedFacesListView);
+selectedFacesListModel = new ImageListModel();
+selectedFacesListDelegate = new ImageListDelegate(ui->selectedFacesListView);
 
-  ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
-  ui->selectedFacesListView->setModel(selectedFacesListModel);
-  ui->selectedFacesListView->setContextMenuPolicy( Qt::CustomContextMenu );
-  connect(ui->selectedFacesListView, &QListView::customContextMenuRequested,this,&VideoFaceDetection::onContextMenu);
-  
-  connect(ui->videoLabel, &QClickLabel::clicked, this, &VideoFaceDetection::getFaceAtPos);
-  // idea of graphic scene n.i.y.
-  //scene = new QGraphicsScene();
-  //ui->graphicsView->setScene(scene);
+ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
+ui->selectedFacesListView->setModel(selectedFacesListModel);
+ui->selectedFacesListView->setContextMenuPolicy(Qt::CustomContextMenu);
+connect(ui->selectedFacesListView, &QListView::customContextMenuRequested, this,
+        &VideoFaceDetection::onContextMenu);
+
+connect(ui->videoLabel, &QClickLabel::clicked, this,
+        &VideoFaceDetection::getFaceAtPos);
+connect(ui->faceDetectionCheckBox, &QCheckBox::stateChanged,this , &VideoFaceDetection::onChangeFacedetection);
+// idea of graphic scene n.i.y.
+// scene = new QGraphicsScene();
+// ui->graphicsView->setScene(scene);
 }
 
 VideoFaceDetection::~VideoFaceDetection() {
@@ -82,6 +79,7 @@ void VideoFaceDetection::loadVideo(const QString &fileName) {
   cap >> frame;
   setLastImage(frame.clone());
   setImage(frame);
+  video_loaded = true;
 }
 
 void VideoFaceDetection::setSlider(unsigned int steps) {
@@ -107,7 +105,6 @@ void VideoFaceDetection::setImage(cv::Mat cv_image) {
 }
 
 void VideoFaceDetection::saveImage() {
-
 }
 
 void VideoFaceDetection::onSlide( int pos) {
@@ -119,9 +116,23 @@ void VideoFaceDetection::onSlide( int pos) {
   setImage(frame);
 }
 
+void VideoFaceDetection::onChangeFacedetection() {
+  if (video_loaded) {
+    cv::Mat frame;
+    frame = getLastImage();
+    setImage(frame);
+  }
+}
+
+
 void VideoFaceDetection::setLastImage(cv::Mat image) {
   last_image = image;
 }
+
+cv::Mat VideoFaceDetection::getLastImage() {
+  return last_image.clone();  
+}
+
 
 void VideoFaceDetection::cropVideoImage() {
   selectedFacesListModel->append(last_image);  
