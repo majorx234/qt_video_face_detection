@@ -8,7 +8,7 @@
 #include "ui_video_face_detection.h"
 #include "image_list_model.hpp"
 #include "image_list_delegate.hpp"
-
+#include "detect_multiscale_param.hpp"
 
 namespace Ui {
 class VideoFaceDetection;
@@ -36,6 +36,7 @@ class VideoFaceDetection : public QWidget {
   void onSlide( int pos);
   void onChangeFacedetection();
   void cropVideoImage();
+  DetectMultiscaleParam getFaceDetectionParams();
   void getFaceAtPos(int x, int y);
   void onContextMenu(QPoint pose);
  private:

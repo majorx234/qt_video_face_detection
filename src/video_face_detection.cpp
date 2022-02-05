@@ -91,10 +91,11 @@ void VideoFaceDetection::setSlider(unsigned int steps) {
 }
 
 void VideoFaceDetection::setImage(cv::Mat cv_image) {
+  DetectMultiscaleParam params = getFaceDetectionParams();
   cv::Mat cv_image_with_faces = cv_image;
   if (ui->faceDetectionCheckBox->isChecked()) {
     
-    std::vector<cv::Rect> new_faces = haarcascade_face_detection(cv_image);
+    std::vector<cv::Rect> new_faces = haarcascade_face_detection(cv_image, params);
     setFaces(new_faces);
     cv::Scalar red( 0, 0, 255 );
     draw_rectangle_in_image(cv_image_with_faces, new_faces, red);
@@ -139,6 +140,18 @@ cv::Mat VideoFaceDetection::getLastImage() {
 void VideoFaceDetection::cropVideoImage() {
   selectedFacesListModel->append(last_image);  
 }
+
+DetectMultiscaleParam VideoFaceDetection::getFaceDetectionParams() {
+  DetectMultiscaleParam params;
+  params.scaleFactor = 1.1;
+  params.minNeighbors = 3;
+  params.flags = CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_SCALE_IMAGE;
+  params.minSize = cv::Size(30,30);
+  params.maxSize = cv::Size(500,500);
+  params.outputRejectLevels = false;
+  return params;
+}
+
 
 void VideoFaceDetection::getFaceAtPos(int x, int y) {
   int p_x = static_cast<int>(x / scale_factor_width);
