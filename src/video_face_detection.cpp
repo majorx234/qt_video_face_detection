@@ -11,6 +11,8 @@
 #include "cv_utils.hpp"
 #include "image_filter.hpp"
 
+#include "detect_multiscale_param.hpp"
+
 VideoFaceDetection::VideoFaceDetection(QWidget *parent)
     : QWidget(parent), ui(new Ui::video_face_detection), frames(0),
       video_width(0), video_height(0), label_width(800), label_height(600),
