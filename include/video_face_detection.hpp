@@ -37,6 +37,7 @@ class VideoFaceDetection : public QWidget {
   void onChangeFacedetection();
   void cropVideoImage();
   DetectMultiscaleParam getFaceDetectionParams();
+  DetectMultiscaleParam getEyesDetectionParams();
   void getFaceAtPos(int x, int y);
   void onContextMenu(QPoint pose);
  private:

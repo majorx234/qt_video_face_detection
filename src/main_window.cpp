@@ -7,7 +7,7 @@
 MainWindow::MainWindow()
     : main_video_widget(new VideoFaceDetection(this))
 {
-  setGeometry( 100, 100, 935, 780 );
+  setGeometry( 100, 100, 980, 780 );
   setCentralWidget(main_video_widget);
   createMenuBar();
 }

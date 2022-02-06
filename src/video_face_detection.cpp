@@ -17,25 +17,29 @@ VideoFaceDetection::VideoFaceDetection(QWidget *parent)
     : QWidget(parent), ui(new Ui::video_face_detection), frames(0),
       video_width(0), video_height(0), label_width(800), label_height(600),
       scale_factor_width(1.0), scale_factor_height(1.0), video_loaded(false) {
-ui->setupUi(this);
-// ui->videoProgressSlider event valueChanged()
-connect(ui->videoProgressSlider, SIGNAL(valueChanged(int)), SLOT(onSlide(int)));
+  ui->setupUi(this);
+  // ui->videoProgressSlider event valueChanged()
+  connect(ui->videoProgressSlider, SIGNAL(valueChanged(int)), SLOT(onSlide(int)));
 
-selectedFacesListModel = new ImageListModel();
-selectedFacesListDelegate = new ImageListDelegate(ui->selectedFacesListView);
+  selectedFacesListModel = new ImageListModel();
+  selectedFacesListDelegate = new ImageListDelegate(ui->selectedFacesListView);
 
-ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
-ui->selectedFacesListView->setModel(selectedFacesListModel);
-ui->selectedFacesListView->setContextMenuPolicy(Qt::CustomContextMenu);
-connect(ui->selectedFacesListView, &QListView::customContextMenuRequested, this,
-        &VideoFaceDetection::onContextMenu);
+  ui->selectedFacesListView->setItemDelegate(selectedFacesListDelegate);
+  ui->selectedFacesListView->setModel(selectedFacesListModel);
+  ui->selectedFacesListView->setContextMenuPolicy(Qt::CustomContextMenu);
+  connect(ui->selectedFacesListView, &QListView::customContextMenuRequested,
+          this, &VideoFaceDetection::onContextMenu);
 
-connect(ui->videoLabel, &QClickLabel::clicked, this,
-        &VideoFaceDetection::getFaceAtPos);
-connect(ui->faceDetectionCheckBox, &QCheckBox::stateChanged,this , &VideoFaceDetection::onChangeFacedetection);
-// idea of graphic scene n.i.y.
-// scene = new QGraphicsScene();
-// ui->graphicsView->setScene(scene);
+  connect(ui->videoLabel, &QClickLabel::clicked,
+          this, &VideoFaceDetection::getFaceAtPos);
+  connect(ui->faceDetectionCheckBox, &QCheckBox::stateChanged,
+          this, &VideoFaceDetection::onChangeFacedetection);
+
+  cv::samples::addSamplesDataSearchPath("/usr/share/opencv");
+  cv::samples::addSamplesDataSearchPath("/usr/share/opencv4");
+  // idea of graphic scene n.i.y.
+  // scene = new QGraphicsScene();
+  // ui->graphicsView->setScene(scene);
 }
 
 VideoFaceDetection::~VideoFaceDetection() {
@@ -91,16 +95,20 @@ void VideoFaceDetection::setSlider(unsigned int steps) {
 }
 
 void VideoFaceDetection::setImage(cv::Mat cv_image) {
-  DetectMultiscaleParam params = getFaceDetectionParams();
   cv::Mat cv_image_with_faces = cv_image;
   if (ui->faceDetectionCheckBox->isChecked()) {
-    
-    std::vector<cv::Rect> new_faces = haarcascade_face_detection(cv_image, params);
+    DetectMultiscaleParam face_params = getFaceDetectionParams();
+    std::vector<cv::Rect> new_faces = haarcascade_face_detection(cv_image, face_params);
     setFaces(new_faces);
     cv::Scalar red( 0, 0, 255 );
     draw_rectangle_in_image(cv_image_with_faces, new_faces, red);
-  } 
-    
+  }
+  if (ui->eyesDetectionCheckBox->isChecked()) {
+    DetectMultiscaleParam eyes_params = getEyesDetectionParams();
+    std::vector<cv::Rect> new_eyes = haarcascade_eye_detection(cv_image, eyes_params);
+    cv::Scalar blue( 255, 0, 0 );
+    draw_rectangle_in_image(cv_image_with_faces, new_eyes, blue);
+  }
   cv::Mat cv_scaled_image = scaledImageToConstrains(cv_image_with_faces,label_width,label_height, scale_factor_width, scale_factor_height);
   QImage qt_image = QImage(static_cast<uchar*>(cv_scaled_image.data), cv_scaled_image.cols, cv_scaled_image.rows, cv_scaled_image.step, QImage::Format_BGR888);
   QPixmap vidPixmap = QPixmap::fromImage(qt_image);
@@ -143,15 +151,29 @@ void VideoFaceDetection::cropVideoImage() {
 
 DetectMultiscaleParam VideoFaceDetection::getFaceDetectionParams() {
   DetectMultiscaleParam params;
-  params.scaleFactor = 1.1;
-  params.minNeighbors = 3;
-  params.flags = CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_SCALE_IMAGE;
-  params.minSize = cv::Size(30,30);
-  params.maxSize = cv::Size(500,500);
+  params.scaleFactor = ui->scaleFactorTextEdit->toPlainText().toDouble();
+  params.minNeighbors =ui->minNeighborsTextEdit->toPlainText().toInt();
+  params.flags = cv::CASCADE_FIND_BIGGEST_OBJECT | cv::CASCADE_SCALE_IMAGE;
+  params.minSize = cv::Size(ui->minSizeXTextEdit->toPlainText().toInt(),
+                            ui->minSizeYTextEdit->toPlainText().toInt());
+  params.maxSize = cv::Size(ui->maxSizeXTextEdit->toPlainText().toInt(),
+                            ui->maxSizeYTextEdit->toPlainText().toInt());
   params.outputRejectLevels = false;
   return params;
 }
 
+DetectMultiscaleParam VideoFaceDetection::getEyesDetectionParams() {
+  DetectMultiscaleParam params;
+  params.scaleFactor = ui->scaleFactorTextEdit_2->toPlainText().toDouble();
+  params.minNeighbors =ui->minNeighborsTextEdit_2->toPlainText().toInt();
+  params.flags = cv::CASCADE_FIND_BIGGEST_OBJECT | cv::CASCADE_SCALE_IMAGE;
+  params.minSize = cv::Size(ui->minSizeXTextEdit_2->toPlainText().toInt(),
+                            ui->minSizeYTextEdit_2->toPlainText().toInt());
+  params.maxSize = cv::Size(ui->maxSizeXTextEdit_2->toPlainText().toInt(),
+                            ui->maxSizeYTextEdit_2->toPlainText().toInt());
+  params.outputRejectLevels = false;
+  return params;
+}
 
 void VideoFaceDetection::getFaceAtPos(int x, int y) {
   int p_x = static_cast<int>(x / scale_factor_width);
