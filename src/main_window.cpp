@@ -18,7 +18,9 @@ void MainWindow::loadFile(const QString &fileName) {
 
 void MainWindow::closeEvent(QCloseEvent *event) 
 {
-
+   QMainWindow::closeEvent(event);
+     if (event->isAccepted())
+        emit closed();
 }
 
 void MainWindow::resizeEvent(QResizeEvent* event)
@@ -41,21 +43,40 @@ void MainWindow::open()
 }
 bool MainWindow::save()
 {
-
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Open Video"),  "~", tr("Jpeg (*.jpg)"));
+  if (!fileName.isEmpty()) {
+        saveFile(fileName);
+    }
   return true;
+}
+
+void MainWindow::close() {
+  QMainWindow::close();    
 }
 
 void MainWindow::createMenuBar()
 {
   QMenu *fileMenu;
   QAction *openAct;
-
+  QAction *saveAct;
+  QAction * exitAct;
+  
   openAct = new QAction(tr("&Open"), this);
   openAct->setShortcuts(QKeySequence::New);
   openAct->setStatusTip(tr("Create a new file"));
   connect(openAct, &QAction::triggered, this, &MainWindow::open);
+  saveAct = new QAction(tr("&Save"), this);
+  saveAct->setShortcuts(QKeySequence::New);
+  saveAct->setStatusTip(tr("Save Image"));
+  connect(saveAct, &QAction::triggered, this, &MainWindow::save);
+  exitAct = new QAction(tr("&Exit"), this);
+  exitAct->setShortcuts(QKeySequence::New);
+  exitAct->setStatusTip(tr("Exit Program"));
+  connect(exitAct, &QAction::triggered, this, &MainWindow::close);
   fileMenu = menuBar()->addMenu(tr("&File"));
   fileMenu->addAction(openAct);
+  fileMenu->addAction(saveAct);
+  fileMenu->addAction(exitAct);
 }
 
 void MainWindow::createStatusBar()
@@ -65,6 +86,7 @@ void MainWindow::createStatusBar()
 
 bool MainWindow::saveFile(const QString &fileName)
 {
+  this->main_video_widget->saveImage(fileName);
   return true;
 }
 

@@ -30,6 +30,8 @@ public:
 
   void loadFile(const QString &fileName);
 
+signals:
+  void closed();  
 protected:
   void closeEvent(QCloseEvent *event) override;
   void resizeEvent(QResizeEvent* event) override;
@@ -37,6 +39,7 @@ private slots:
   void newFile();
   void open();
   bool save();
+  void close();
 
 private:
   void createMenuBar();

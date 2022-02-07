@@ -124,7 +124,13 @@ void VideoFaceDetection::setImage(cv::Mat cv_image) {
   ui->videoLabel->setPixmap(vidPixmap);
 }
 
-void VideoFaceDetection::saveImage() {
+void VideoFaceDetection::saveImage(const QString &fileName) {
+  cv::Mat image_to_write = getLastImage();
+  if(image_to_write.empty())
+  {
+    std::cerr << "Something is wrong with last image, could not get frame." << std::endl;
+  }
+  cv::imwrite(fileName.toStdString(), image_to_write);
 }
 
 void VideoFaceDetection::onSlide( int pos) {
