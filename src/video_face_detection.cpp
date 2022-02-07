@@ -95,21 +95,30 @@ void VideoFaceDetection::setSlider(unsigned int steps) {
 }
 
 void VideoFaceDetection::setImage(cv::Mat cv_image) {
-  cv::Mat cv_image_with_faces = cv_image;
+  std::vector<cv::Rect> new_faces;
+  std::vector<cv::Rect> new_eyes;
+  
+  /* face & eye detection */
   if (ui->faceDetectionCheckBox->isChecked()) {
     DetectMultiscaleParam face_params = getFaceDetectionParams();
-    std::vector<cv::Rect> new_faces = haarcascade_face_detection(cv_image, face_params);
+    new_faces = haarcascade_face_detection(cv_image, face_params);
     setFaces(new_faces);
-    cv::Scalar red( 0, 0, 255 );
-    draw_rectangle_in_image(cv_image_with_faces, new_faces, red);
   }
   if (ui->eyesDetectionCheckBox->isChecked()) {
     DetectMultiscaleParam eyes_params = getEyesDetectionParams();
-    std::vector<cv::Rect> new_eyes = haarcascade_eye_detection(cv_image, eyes_params);
-    cv::Scalar blue( 255, 0, 0 );
-    draw_rectangle_in_image(cv_image_with_faces, new_eyes, blue);
+    new_eyes = haarcascade_eye_detection(cv_image, eyes_params);
   }
-  cv::Mat cv_scaled_image = scaledImageToConstrains(cv_image_with_faces,label_width,label_height, scale_factor_width, scale_factor_height);
+
+  /* drawing faces and eyes as rectangle in cv_image */
+  if (ui->faceDetectionCheckBox->isChecked()) {
+    cv::Scalar red( 0, 0, 255 );
+    draw_rectangle_in_image(cv_image, new_faces, red);
+  }
+  if (ui->eyesDetectionCheckBox->isChecked()) {
+    cv::Scalar blue( 255, 0, 0 );
+    draw_rectangle_in_image(cv_image, new_eyes, blue);
+  }
+  cv::Mat cv_scaled_image = scaledImageToConstrains(cv_image,label_width,label_height, scale_factor_width, scale_factor_height);
   QImage qt_image = QImage(static_cast<uchar*>(cv_scaled_image.data), cv_scaled_image.cols, cv_scaled_image.rows, cv_scaled_image.step, QImage::Format_BGR888);
   QPixmap vidPixmap = QPixmap::fromImage(qt_image);
   ui->videoLabel->setPixmap(vidPixmap);
