@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1014</width>
-    <height>792</height>
+    <width>971</width>
+    <height>751</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>-9</x>
-     <y>-1</y>
+     <x>0</x>
+     <y>0</y>
      <width>961</width>
-     <height>738</height>
+     <height>741</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -678,6 +678,25 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="text">
          <string>eyes detection</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="pixelateFaceCheckBox">
+        <property name="minimumSize">
+         <size>
+          <width>128</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>128</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>pixelate face</string>
         </property>
        </widget>
       </item>
