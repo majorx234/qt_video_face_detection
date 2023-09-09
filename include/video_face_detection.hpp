@@ -35,6 +35,7 @@ class VideoFaceDetection : public QWidget {
  public slots:  
   void onSlide( int pos);
   void onChangeFacedetection();
+  void onChangePixelateFace();
   void cropVideoImage();
   DetectMultiscaleParam getFaceDetectionParams();
   DetectMultiscaleParam getEyesDetectionParams();

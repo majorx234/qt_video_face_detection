@@ -29,3 +29,17 @@ std::vector<cv::Rect> haarcascade_eye_detection(cv::Mat cv_img, DetectMultiscale
   eye_cascade.detectMultiScale(mGray, eyes, params.scaleFactor, params.minNeighbors, params.flags, params.minSize);
   return eyes;
 }
+
+cv::Mat pixelate_image(cv::Mat cv_image, std::vector<cv::Rect> rectangle_list) {
+  cv::Mat output_image;
+  cv_image.copyTo(output_image);
+  for (cv::Rect &rectangle : rectangle_list) {
+    cv::Mat face_image = output_image(rectangle);
+    cv::resize(face_image, face_image, cv::Size(), 0.125, 0.125, cv::INTER_NEAREST);
+    cv::resize(face_image, face_image, cv::Size(), 8.0, 8.0, cv::INTER_NEAREST);
+
+    cv::Mat insert_image(output_image, rectangle);
+    face_image.copyTo(insert_image);
+  }
+  return output_image;
+}

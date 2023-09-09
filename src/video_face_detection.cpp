@@ -109,6 +109,10 @@ void VideoFaceDetection::setImage(cv::Mat cv_image) {
     new_eyes = haarcascade_eye_detection(cv_image, eyes_params);
   }
 
+  if (ui->pixelateFaceCheckBox->isChecked()) {
+    cv_image = pixelate_image(cv_image, new_faces);
+  }
+
   /* drawing faces and eyes as rectangle in cv_image */
   if (ui->faceDetectionCheckBox->isChecked()) {
     cv::Scalar red( 0, 0, 255 );
@@ -150,6 +154,12 @@ void VideoFaceDetection::onChangeFacedetection() {
   }
 }
 
+void VideoFaceDetection::onChangePixelateFace() {
+  if (video_loaded) {
+    cv::Mat frame = getLastImage();
+    setImage(frame);
+  }
+}
 
 void VideoFaceDetection::setLastImage(cv::Mat image) {
   last_image = image;
