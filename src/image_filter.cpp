@@ -30,16 +30,13 @@ std::vector<cv::Rect> haarcascade_eye_detection(cv::Mat cv_img, DetectMultiscale
   return eyes;
 }
 
-cv::Mat pixelate_image(cv::Mat cv_image, std::vector<cv::Rect> rectangle_list) {
-  cv::Mat output_image;
-  cv_image.copyTo(output_image);
+void pixelate_image(cv::Mat &cv_image, std::vector<cv::Rect> rectangle_list) {
   for (cv::Rect &rectangle : rectangle_list) {
-    cv::Mat face_image = output_image(rectangle);
+    cv::Mat face_image = cv_image(rectangle);
     cv::resize(face_image, face_image, cv::Size(), 0.1, 0.1, cv::INTER_NEAREST);
     cv::resize(face_image, face_image, cv::Size(), 10.0, 10.0, cv::INTER_NEAREST);
 
-    cv::Mat insert_image(output_image, rectangle);
+    cv::Mat insert_image(cv_image, rectangle);
     face_image.copyTo(insert_image);
   }
-  return output_image;
 }

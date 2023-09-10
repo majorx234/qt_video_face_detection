@@ -110,7 +110,8 @@ void VideoFaceDetection::setImage(cv::Mat cv_image) {
   }
 
   if (ui->pixelateFaceCheckBox->isChecked()) {
-    cv_image = pixelate_image(cv_image, new_faces);
+    //cv_image =
+    pixelate_image(cv_image, new_faces);
   }
 
   /* drawing faces and eyes as rectangle in cv_image */
