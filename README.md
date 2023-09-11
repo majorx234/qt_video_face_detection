@@ -7,3 +7,8 @@
 - `cmake ..`
 - `make`
 
+# Issues
+- still got some bugs due to multithreading
+  - caused crashes 
+- pixelation isn't working working fine
+  - maybe also related to multihreaded environment
