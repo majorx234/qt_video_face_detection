@@ -15,7 +15,7 @@ include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${Qt5Core_INCLUDE_DIRS})
 include_directories(${PROJECT_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
+include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(include)
 
 set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
@@ -24,82 +24,87 @@ set(MAIN_APP_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
 )
 
 set(VIDEO_FACE_DETECTION_SRC
-	${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/include/qclicklabel.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/qclicklabel.cpp)
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/qclicklabel.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/qclicklabel.cpp
+)
 
 set(IMAGE_LIST_SRC
-	${CMAKE_CURRENT_SOURCE_DIR}/include/image_item.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/image_item.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/include/image_list_model.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_model.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/include/image_list_delegate.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_delegate.cpp
-	)
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/image_item.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_item.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/image_list_model.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_model.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/image_list_delegate.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_delegate.cpp
+)
 
 set(IMAGE_FILTER_SRC
-	${CMAKE_CURRENT_SOURCE_DIR}/include/image_filter.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/image_filter.cpp
-	)
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/image_filter.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_filter.cpp
+)
 
 set(CV_UTILS_SRC
-  ${CMAKE_CURRENT_SOURCE_DIR}/include/cv_utils.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/cv_utils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/cv_utils.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/cv_utils.cpp
 )
 
 QT5_WRAP_UI(VIDEO_FACE_DETECTION_UISrcs 
-            ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.ui)
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.ui
+)
 
 QT5_WRAP_CPP(MAIN_MOCrcs
-						  ${MAIN_APP_SRC}
+    ${MAIN_APP_SRC}
 )
 
 QT5_WRAP_CPP(VIDEO_FACE_DETECTION_MOCrcs
-						  ${VIDEO_FACE_DETECTION_SRC}
-							)
+    ${VIDEO_FACE_DETECTION_SRC}
+)
 
 QT5_WRAP_CPP(IMAGE_LIST_MOCrcs
-						  ${IMAGE_LIST_SRC}
+    ${IMAGE_LIST_SRC}
 )
-						
+
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
 add_library(image_list
-	${IMAGE_LIST_SRC}
-	${IMAGE_LIST_MOCrcs}
+    ${IMAGE_LIST_SRC}
+    ${IMAGE_LIST_MOCrcs}
 )
 
 add_library(video_face_detection
-	           ${VIDEO_FACE_DETECTION_MOCrcs}
-             ${VIDEO_FACE_DETECTION_SRC}
-             ${VIDEO_FACE_DETECTION_UISrcs}
+    ${VIDEO_FACE_DETECTION_MOCrcs}
+    ${VIDEO_FACE_DETECTION_SRC}
+    ${VIDEO_FACE_DETECTION_UISrcs}
 )
 
 target_link_libraries(video_face_detection
-	${OpenCV_LIBS}
-	image_list
-	cv_utils
-	image_filter
+    ${OpenCV_LIBS}
+    image_list
+    cv_utils
+    image_filter
 )
 
 add_library(image_filter
-	${IMAGE_FILTER_SRC}
+    ${IMAGE_FILTER_SRC}
 )
 
 add_library(cv_utils
-	${CV_UTILS_SRC}
+    ${CV_UTILS_SRC}
 )
 
 target_link_libraries(image_filter
-	${OpenCV_LIBS}
+    ${OpenCV_LIBS}
 )
 
-add_executable(qt_video_app ${MAIN_MOCrcs} ${MAIN_APP_SRC})
+add_executable(qt_video_app
+    ${MAIN_MOCrcs}
+    ${MAIN_APP_SRC}
+)
 
 target_link_libraries(qt_video_app
-	video_face_detection
-	)
+    video_face_detection
+)
 
 qt5_use_modules(image_list Core Gui Widgets)
 qt5_use_modules(qt_video_app Core Gui Widgets)
