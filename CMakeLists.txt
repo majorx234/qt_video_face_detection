@@ -87,6 +87,11 @@ target_sources(image_list
     ${IMAGE_LIST_SRC}
     ${IMAGE_LIST_MOCrcs}
 )
+target_link_libraries(image_list
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+)
 
 add_library(cv_utils)
 target_sources(cv_utils
@@ -105,6 +110,9 @@ target_sources(video_face_detection
 )
 target_link_libraries(video_face_detection
     ${OpenCV_LIBS}
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
     image_list
     cv_utils
     image_filter
@@ -129,8 +137,7 @@ target_sources(qt_video_app
 )
 target_link_libraries(qt_video_app
     video_face_detection
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
 )
-
-qt5_use_modules(image_list Core Gui Widgets)
-qt5_use_modules(qt_video_app Core Gui Widgets)
-qt5_use_modules(video_face_detection Core Gui Widgets)
