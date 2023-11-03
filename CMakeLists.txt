@@ -81,18 +81,28 @@ QT5_WRAP_CPP(IMAGE_LIST_MOCrcs
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
-add_library(image_list
+add_library(image_list)
+target_sources(image_list
+    PRIVATE
     ${IMAGE_LIST_SRC}
     ${IMAGE_LIST_MOCrcs}
 )
 
-add_library(video_face_detection
+add_library(cv_utils)
+target_sources(cv_utils
+    PRIVATE
+    ${CV_UTILS_SRC}
+    ${CV_UTILS_HEADERS}
+)
+
+add_library(video_face_detection)
+target_sources(video_face_detection
+    PRIVATE
     ${VIDEO_FACE_DETECTION_MOCrcs}
     ${VIDEO_FACE_DETECTION_HEADERS}
     ${VIDEO_FACE_DETECTION_SRC}
     ${VIDEO_FACE_DETECTION_UISrcs}
 )
-
 target_link_libraries(video_face_detection
     ${OpenCV_LIBS}
     image_list
@@ -100,26 +110,23 @@ target_link_libraries(video_face_detection
     image_filter
 )
 
-add_library(image_filter
+add_library(image_filter)
+target_sources(image_filter
+    PRIVATE
     ${IMAGE_FILTER_SRC}
     ${IMAGE_FILTER_HEADERS}
 )
-
-add_library(cv_utils
-    ${CV_UTILS_SRC}
-    ${CV_UTILS_HEADERS}
-)
-
 target_link_libraries(image_filter
     ${OpenCV_LIBS}
 )
 
-add_executable(qt_video_app
+add_executable(qt_video_app)
+target_sources(qt_video_app
+    PRIVATE
     ${MAIN_MOCrcs}
     ${MAIN_APP_SRC}
     ${MAIN_APP_HEADERS}
 )
-
 target_link_libraries(qt_video_app
     video_face_detection
 )
