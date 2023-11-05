@@ -19,27 +19,28 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(include)
 
 set(MAIN_APP_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_app.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/qt_video_app/main_app.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/qt_video_app/main_window.cpp
 )
+
 Set(MAIN_APP_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/main_window.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_window.cpp
 )
 
 set(VIDEO_FACE_DETECTION_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/qclicklabel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection/qclicklabel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection/video_face_detection.cpp
 )
 
 set(VIDEO_FACE_DETECTION_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/video_face_detection.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/qclicklabel.hpp
 )
 
 set(IMAGE_LIST_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_item.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_model.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_list_delegate.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_list/image_item.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_list/image_list_model.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_list/image_list_delegate.cpp
 )
 set(IMAGE_LIST_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/image_item.hpp
@@ -48,7 +49,7 @@ set(IMAGE_LIST_HEADERS
 )
 
 set(IMAGE_FILTER_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_filter.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/image_filter/image_filter.cpp
 )
 
 set(IMAGE_FILTER_HEADERS
@@ -56,15 +57,15 @@ set(IMAGE_FILTER_HEADERS
 )
 
 set(CV_UTILS_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/cv_utils.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/cv_utils/cv_utils.cpp
 )
 
 set(CV_UTILS_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cv_utils.hpp
 )
 
-QT5_WRAP_UI(VIDEO_FACE_DETECTION_UISrcs 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection.ui
+QT5_WRAP_UI(VIDEO_FACE_DETECTION_UISrcs
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/video_face_detection/video_face_detection.ui
 )
 
 QT5_WRAP_CPP(MAIN_MOCrcs
